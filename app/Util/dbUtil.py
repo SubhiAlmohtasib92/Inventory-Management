@@ -42,9 +42,6 @@ def GetFreeProductQuantity(productID):
     d=GetDB()
     mycursor=d.cursor()
     sql="SELECT IFNULL(cast(quantity - sum(qty) as int),(select Quantity from product where product_id='{product_id}')) as num FROM product p , productmovement pm WHERE pm.productiD=p.product_id and pm.productiD='{product_id}'".format(product_id=productID)
-    f=open('ddd.txt','a')
-    f.write(sql)
-    f.close()
     mycursor.execute(sql)
     return mycursor.fetchall()
 

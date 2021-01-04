@@ -1,0 +1,93 @@
+{% extends 'base.html' %} {% block body %}
+
+<div class="container-fluid">
+    <div class="container" style="width: 50%;">
+        {% for message in get_flashed_messages(with_categories=True) %}
+        <div class="alert alert-{{message[0]}}" id="alert-box" role="alert">
+            <h4 style="text-align:center;">{{ message[1] }}</h4>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div style=" display: flex;justify-content: center;">
+    <h3 style="display: inline-block;margin:0;margin-bottom: 5px;">Central Warehouse Locations</h3>
+
+</div>
+
+<!-- Add new location modal  -->
+<div class="modal fade" id="addNewLocation" tabindex="-1" role="dialog" aria-labelledby="addNewLocationLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addNewLocationLabel">Add new location</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('locations.handle_data') }}" method="post">
+                    <div class="form-group needs-validation" novalidate>
+                        <input type="text" class="form-control" name="locationName" autocomplete="off" placeholder="Product Name" required>
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Add new location">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div style=" display: flex;justify-content: center;">
+    <table class="table table-bordered" id="Table" cellspacing="3" style="table-layout:fixed ;width: 70%; white-space: nowrap;text-align: center;vertical-align: middle;">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">location Name</th>
+                <th>
+                    <button style="float: right;" type="button" class="btn btn-primary btn-md btn-block" data-toggle="modal" data-target="#addNewLocation">
+                        <span> Add location</span>
+                    </button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in locationList %}
+            <tr>
+                <th scope="row"><strong>{{locationList.index(d) +1}}</strong></th>
+                <td><strong>{{d[1]}}</strong></td>
+                <td style="width:1%; white-space: nowrap;text-align: center;vertical-align: middle; margin-left: 20px;">
+                    <button style="float: right;" type="button" class="btn btn-success btn-md btn-block" data-toggle="modal" data-target="#editlocation{{d[0]}}">
+                    <span>Edit</span>
+                </button>
+                </td>
+            </tr>
+
+            <!-- Edit  product modal  -->
+            <div class="modal fade" id="editlocation{{d[0]}}" tabindex="-1" role="dialog" aria-labelledby="editlocationLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editlocationLabel">Edit location</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ url_for('locations.handle_data') }}" method="post">
+                                <div class="form-group needs-validation" novalidate>
+                                    <input type="hidden" id="locationID" name="locationID" value="{{d[0]}}" />
+                                    <input type="text" class="form-control" name="locationName" value="{{d[1]}}" autocomplete="off" placeholder="Location Name" required>
+                                </div>
+                                <input type="submit" class="btn btn-primary" value="Update Product">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

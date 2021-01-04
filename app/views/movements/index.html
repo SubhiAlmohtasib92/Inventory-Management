@@ -1,0 +1,145 @@
+{% extends 'base.html' %} {% block body %}
+
+<div class="container-fluid">
+    <div class="container" style="width: 50%;">
+        {% for message in get_flashed_messages(with_categories=True) %}
+        <div class="alert alert-{{message[0]}}" id="alert-box" role="alert">
+            <h4 style="text-align:center;">{{ message[1] }}</h4>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div style=" display: flex;justify-content: center;">
+    <h3 style="display: inline-block;margin:0;margin-bottom: 5px;"> Manage movements in your central Warehouse</h3>
+</div>
+
+<!-- Add new product modal  -->
+<div class="modal fade" id="addNewMovement" tabindex="-1" role="dialog" aria-labelledby="addNewMovementLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addNewMovementLabel">Add new Movement</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div class="container" style="width: 100%;">
+                        <div class="alert alert-danger" id="alert-box-validation" role="alert">
+                            <h6 id="validationMessage" style="text-align:center;"></h6>
+                        </div>
+                    </div>
+                </div>
+                <form action="{{ url_for('movements.handle_data') }}" method="post" id="newMovement">
+                    <div class="form-group needs-validation" novalidate>
+                        <label for="sel1">Products List :</label>
+                        <select class="form-control" id="newProductID" name="ProductID" required>
+                            {% for d in productList %}
+                            <option value="{{d[0]}}">{{d[1]}}</option>
+                         {%endfor%}
+                        </select>
+                        <label for="sel1" style="margin-top: 5px;"> From Location:</label>
+                        <select class="form-control" id="newFromLocation" name="FromLocation">
+                              <option value="" selected></option>
+                        </select>
+                        <label for="sel1" style="margin-top: 5px;"> To Location:</label>
+                        <select class="form-control" id="newToLocation" name="ToLocation" required>
+                              {% for d in locationsList %}
+                              <option value="{{d[0]}}">{{d[1]}}</option>
+                           {%endfor%}
+                        </select>
+                        <label for="productQuantity" style="margin-top: 5px;">Product Quantity:</label>
+                        <input type="number" id="newProductQuantity" class="form-control" onkeypress="return event.charCode >= 48" min="1" name="ProductQuantity" autocomplete="off" placeholder="Product Quantity" required>
+                    </div>
+                    <button id="addnewMovement" name="addnewMovement" class="btn btn-primary">
+                        Add new Movement
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div style=" display: flex;justify-content: center;">
+    <table class="table table-bordered" id="Table" cellspacing="3" style="table-layout:fixed ;width: 90%; white-space: nowrap;text-align: center;vertical-align: middle;">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Timestamp</th>
+                <th scope="col">From Location</th>
+                <th scope="col">To Location</th>
+                <th scope="col">Product Name </th>
+                <th scope="col">Quantity </th>
+                <th>
+                    <button style="float: right;" type="button" class="btn btn-primary btn-md btn-block" data-toggle="modal" data-target="#addNewMovement">
+                        <span> Add Movement</span>
+                    </button>
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in movementsList %}
+            <tr>
+                <th scope="row"><strong>{{movementsList.index(d) +1}}</strong></th>
+                <td><strong>{{d[1]}}</strong></td>
+                <td><strong>{{d[2]}}</strong></td>
+                <td><strong>{{d[3]}}</strong></td>
+                <td><strong>{{d[4]}}</strong></td>
+                <td><strong>{{d[5]}}</strong></td>
+                <td style="width:1%; white-space: nowrap;text-align: center;vertical-align: middle; margin-left: 20px;">
+                    <button style="float: right;" type="button" class="btn btn-success btn-md btn-block" data-toggle="modal" data-target="#editMovement{{d[0]}}">
+                    <span>Edit</span></button>
+                </td>
+                <!-- Edit  product modal  -->
+                <div class="modal fade" id="editMovement{{d[0]}}" tabindex="-1" role="dialog" aria-labelledby="editMovementLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editMovementLabel">Edit Movement</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ url_for('movements.handle_data') }}" method="post">
+                                    <div class="form-group needs-validation" novalidate>
+                                        <input type="hidden" id="editMovementId" name="editMovementId" value="{{d[0]}}" />
+                                        <label for="editProductID">Products List :</label>
+                                        <select class="form-control" id="editProductID" name="ProductID" required>
+                                            {% for x in productList %}
+                                            <option  value="{{x[0]}}">
+                                                {{x[1]}}
+                                            </option>
+                                            {%endfor%}
+                                        </select>
+                                        <label for="editFromLocation" style="margin-top: 5px;"> From Location:</label>
+                                        <select class="form-control" id="editFromLocation" name="FromLocation">
+                                        {% for d in locationsList %}
+                                        <option value="{{d[0]}}">{{d[1]}}</option>
+                                     {%endfor%}
+                                      </select>
+                                        <label for="editToLocation" style="margin-top: 5px;"> To Location:</label>
+                                        <select class="form-control" id="editToLocation" name="ToLocation" required>
+                              {% for d in locationsList %}
+                              <option value="{{d[0]}}">{{d[1]}}</option>
+                                    {%endfor%}
+                                    </select>
+                                        <label for="editProductQuantity" style="margin-top: 5px;">Product Quantity:</label>
+                                        <input type="number" value="{{d[5]}}" id="editProductQuantity" class="form-control" onkeypress="return event.charCode >= 48" min="1" name="ProductQuantity" autocomplete="off" placeholder="Product Quantity" required>
+                                    </div>
+                                    <button id="editMovement" name="editMovement" class="btn btn-primary">Save</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

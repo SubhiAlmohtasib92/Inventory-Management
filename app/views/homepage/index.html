@@ -1,0 +1,26 @@
+{% extends 'base.html' %} {% block body %}
+
+<div style=" display: flex;justify-content: center;">
+    <h3 style="display: inline-block;margin:0;margin-bottom: 5px;"> Manage products in your central Warehouse</h3>
+</div>
+
+<div style=" display: flex;justify-content: center;">
+    <table class="table table-bordered" id="Table" cellspacing="3" style="table-layout:fixed ;width: 70%; white-space: nowrap;text-align: center;vertical-align: middle;">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Product Name</th>
+                <th scope="col">Warehouse</th>
+                <th scope="col">Quantity</th>
+        </thead>
+        <tbody>
+            {% for d in report %}
+            <tr>
+                <th scope="row"><strong>{{d[0]}}</strong></th>
+                <td><strong>{{d[1]}}</strong></td>
+                <td><strong>{{d[2]}}</strong></td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <script src="../assets/js/jquery.min.js"></script>
+    <script src="../assets/js/popper.min.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+    <script src="../assets/js/main.js"></script>
+    <link rel="stylesheet" href="../assets/css/main.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <a class="navbar-brand" href="/">Inventory Management</a>
+        <ul class="navbar-nav ml-auto items">
+            <li class="nav-item">
+                <a class="nav-link btn btn-success" style=" color: white;" href="/products">Products</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link btn btn-success" style=" color: white;" href="/locations">Locations</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link btn btn-success" style=" color: white;" href="/movements">Movements</a>
+            </li>
+        </ul>
+    </nav>
+    <br> {% block body %} {% endblock %}
+</body>
+
+</html>

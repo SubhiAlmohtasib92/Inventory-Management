@@ -1,0 +1,96 @@
+{% extends 'base.html' %} {% block body %}
+
+<div class="container-fluid">
+    <div class="container" style="width: 50%;">
+        {% for message in get_flashed_messages(with_categories=True) %}
+        <div class="alert alert-{{message[0]}}" id="alert-box" role="alert">
+            <h4 style="text-align:center;">{{ message[1] }}</h4>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<div style=" display: flex;justify-content: center;">
+    <h3 style="display: inline-block;margin:0;margin-bottom: 5px;"> Central Warehouse Products</h3>
+</div>
+
+<!-- Add new product modal  -->
+<div class="modal fade" id="addNewProduct" tabindex="-1" role="dialog" aria-labelledby="addNewProductLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addNewProductLabel">Add new Product</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url_for('products.handle_data') }}" method="post">
+                    <div class="form-group needs-validation" novalidate>
+                        <input type="text" class="form-control" name="productName" autocomplete="off" placeholder="Product Name" required>
+                        <input type="number" style="margin-top: 5px;" class="form-control" onkeypress="return event.charCode >= 48" min="1" name="productQuantity" autocomplete="off" placeholder="Product Quantity" required>
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Add new product">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div style=" display: flex;justify-content: center;">
+    <table class="table table-bordered" id="Table" cellspacing="3" style="table-layout:fixed ;width: 70%; white-space: nowrap;text-align: center;vertical-align: middle;">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Quantity</th>
+                <th>
+                    <button style="float: right;" type="button" class="btn btn-primary btn-md btn-block" data-toggle="modal" data-target="#addNewProduct">
+                        <span> Add Product</span>
+                    </button>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in productsList %}
+            <tr>
+                <th scope="row"><strong>{{productsList.index(d) +1}}</strong></th>
+                <td><strong>{{d[1]}}</strong></td>
+                <td><strong>{{d[2]}}</strong></td>
+                <td style="width:1%; white-space: nowrap;text-align: center;vertical-align: middle; margin-left: 20px;">
+                    <button style="float: right;" type="button" class="btn btn-success btn-md btn-block" data-toggle="modal" data-target="#editProduct{{d[0]}}">
+                    <span>Edit</span>
+                </button>
+                </td>
+            </tr>
+
+            <!-- Edit Product Modal  -->
+            <div class="modal fade" id="editProduct{{d[0]}}" tabindex="-1" role="dialog" aria-labelledby="editProductLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editProductLabel">Edit Product</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{{ url_for('products.handle_data') }}" method="post">
+                                <div class="form-group needs-validation" novalidate>
+                                    <input type="hidden" id="productid" name="productid" value="{{d[0]}}" />
+                                    <input type="text" class="form-control" name="productName" value="{{d[1]}}" autocomplete="off" placeholder="Product Name" required>
+                                    <input type="number" style="margin-top: 5px;" value="{{d[2]}}" class="form-control" onkeypress="return event.charCode >= 48" min="1" name="productQuantity" autocomplete="off" placeholder="Product Quantity" required>
+                                </div>
+                                <input type="submit" class="btn btn-primary" value="Update Product">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

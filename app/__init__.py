@@ -4,6 +4,8 @@ from app.Controllers.locations_controller import locations_blueprint
 from app.Controllers.productmovement import movements_blueprint
 import os
 from app.Util.dbUtil import GetReport
+from app.Util.dbUtil import GetTotalsReport
+from app.Util.dbUtil import GetTotalsReportColNames
 
 template_dir = os.path.abspath('app/views')
 assets_dir = os.path.abspath('app/assets')
@@ -17,6 +19,12 @@ app.config['SECRET_KEY'] = 'Web-Inventory-Secret-Key'
 def home():
     reportData=GetReport()
     return render_template('homepage/index.html',report=reportData)
+
+@app.route('/totals')
+def totals():
+    reportData=GetTotalsReport()
+    reportColumnNames=GetTotalsReportColNames()
+    return render_template('homepage/totalsreport.html',report=reportData,colNames=reportColumnNames)
 
 @app.route('/<name>/')
 def test(name):

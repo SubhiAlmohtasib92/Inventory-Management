@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% block body %}
+
+<div style=" display: flex;justify-content: center;">
+    <h3 style="display: inline-block;margin:0;margin-bottom: 5px;"> Products Total Report</h3>
+</div>
+
+<div style=" display: flex;justify-content: center;">
+    <table class="table table-bordered" id="TotalsReport" cellspacing="3" style="table-layout:fixed ;width: 70%; white-space: nowrap;text-align: center;vertical-align: middle;">
+        <thead class="thead-dark">
+            <tr>
+                {% for d in colNames %}
+                <th scope="col">{{d}}</th>
+
+                {%endfor%}
+                <th scope="col">Total </th>
+        </thead>
+        <tbody>
+            {% for d in report %}
+            <tr>
+                {% for x in d %}
+                <th scope="row" class="qty"><strong>{{x}}</strong></th>
+                {%endfor%}
+                <th scope="row" class="total-qty"><strong>0</strong></th>
+            </tr>
+
+            {%endfor%}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -59,4 +59,27 @@ def GetReport():
     mycursor.execute(sql)
     return mycursor.fetchall()
 
+def GetTotalsReport():
+    d=GetDB()
+    mycursor=d.cursor()
+    args = []
+    mycursor.callproc('GetTotals', args)
+    colNames=[]
+    for result in mycursor.stored_results():
+        for x in result.description:
+            colNames.append (x[0])
+        return result.fetchall()
+
+def GetTotalsReportColNames():
+    d=GetDB()
+    mycursor=d.cursor()
+    args = []
+    mycursor.callproc('GetTotals', args)
+    colNames=[]
+    for result in mycursor.stored_results():
+        for x in result.description:
+            colNames.append (x[0])
+        return colNames
+
+
 

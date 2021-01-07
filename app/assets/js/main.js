@@ -16,4 +16,19 @@ $(document).ready(function() {
                 });
             });
     });
+
+    $('#TotalsReport tr').each(function() {
+        var sum = 0
+        $(this).find('.qty').each(function() {
+
+            var qty = $(this).text();
+
+            if (!isNaN(qty) && qty.length !== 0) {
+                sum += parseFloat(qty);
+            }
+        });
+
+        $('.total-qty', this).html(sum);
+    });
+
 });

@@ -91,7 +91,18 @@ This report will show products balance in each location
 ![mvng](https://github.com/SubhiAlmohtasib92/Inventory-Management/blob/master/images/ProductBalanceReport.png)
 
 
+
+### Totals Report
+This report will show products Totals and the quantity of each product per location
+
+![mvng](https://github.com/SubhiAlmohtasib92/Inventory-Management/blob/master/images/movementsList_total.png)
+
+
+![mvng](https://github.com/SubhiAlmohtasib92/Inventory-Management/blob/master/images/totalspage.png)
+
+
 # Built using
 - Flask
+
 
 
